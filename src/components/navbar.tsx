@@ -13,6 +13,7 @@ import {
   ChevronDown,
   Bell,
   Settings,
+  Wrench,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -33,6 +34,7 @@ import { useCart } from "@/lib/context/cart.context";
 import { Badge } from "./ui/badge";
 import { Head } from "./ui/head";
 import { IconRenderer } from "@/components/ui/icon-renderer";
+import { WEBSITE_ID } from "@/lib/constants/base";
 
 const formatBalance = (balance: number | undefined): string => {
   if (balance === undefined || balance === null) return "0.00";
@@ -53,15 +55,18 @@ export function Navbar() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const getLinkClassName = (path: string) => {
-    const isActive = path === "/" ? pathname === "/" : pathname.startsWith(path) && path !== "/";
+    const isActive =
+      path === "/"
+        ? pathname === "/"
+        : pathname.startsWith(path) && path !== "/";
     return `relative px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 flex items-center gap-2 ${
-      isActive 
-        ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400" 
+      isActive
+        ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
         : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-white"
     }`;
   };
@@ -73,24 +78,35 @@ export function Navbar() {
     { href: "/wallet", icon: Wallet, label: "Cüzdanım" },
     { href: "/chest", icon: BoxIcon, label: "Sandığım" },
     { href: "/settings", icon: Settings, label: "Ayarlar" },
+    {
+      href: `https://app.crafter.net.tr/cms/auth?websiteId=${WEBSITE_ID}&accessToken=${localStorage.getItem(
+        "accessToken"
+      )}&refreshToken=${localStorage.getItem("refreshToken")}`,
+      icon: Wrench,
+      label: "Yönetim Paneli",
+    },
   ];
 
   return (
-    <header 
+    <header
       className={`sticky top-0 z-50 w-full border-b bg-white/80 dark:bg-gray-950/80 backdrop-blur-md transition-all duration-300 ${
-        isScrolled ? 'shadow-sm border-gray-200/60 dark:border-gray-800/60' : 'border-transparent'
+        isScrolled
+          ? "shadow-sm border-gray-200/60 dark:border-gray-800/60"
+          : "border-transparent"
       }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          
           {/* Logo/Brand - Sol */}
           <div className="flex items-center gap-8">
-
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center space-x-1">
               {navigationItems?.map((item) => (
-                <Link key={item.url} href={item.url} className={getLinkClassName(item.url)}>
+                <Link
+                  key={item.url}
+                  href={item.url}
+                  className={getLinkClassName(item.url)}
+                >
                   <IconRenderer iconName={item.icon} className="w-4 h-4" />
                   <span>{item.label}</span>
                 </Link>
@@ -100,23 +116,30 @@ export function Navbar() {
 
           {/* Sağ taraf - Actions */}
           <div className="flex items-center gap-3">
-            
             {/* Notification Bell */}
-            <Button variant="ghost" size="sm" className="relative p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="relative p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+            >
               <Bell className="w-5 h-5" />
               {/* <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span> */}
             </Button>
 
             {/* Cart */}
             <Link href="/cart">
-              <Button variant="ghost" size="sm" className="relative p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="relative p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+              >
                 <ShoppingCart className="w-5 h-5" />
                 {totalItems > 0 && (
-                  <Badge 
-                    variant="secondary" 
+                  <Badge
+                    variant="secondary"
                     className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs font-semibold bg-blue-600 text-white"
                   >
-                    {totalItems > 9 ? '9+' : totalItems}
+                    {totalItems > 9 ? "9+" : totalItems}
                   </Badge>
                 )}
               </Button>
@@ -126,8 +149,15 @@ export function Navbar() {
             {isAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="flex items-center gap-2 px-2 py-1 h-auto rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
-                    <Head username={user?.username || "steve"} size={32} className="w-8 h-8 rounded-lg" />
+                  <Button
+                    variant="ghost"
+                    className="flex items-center gap-2 px-2 py-1 h-auto rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+                  >
+                    <Head
+                      username={user?.username || "steve"}
+                      size={32}
+                      className="w-8 h-8 rounded-lg"
+                    />
                     <div className="hidden md:block text-left">
                       <div className="text-sm font-medium text-gray-900 dark:text-white">
                         {user?.username}
@@ -177,7 +207,10 @@ export function Navbar() {
                   </Button>
                 </Link>
                 <Link href="/auth/sign-up">
-                  <Button size="sm" className="text-sm bg-blue-600 hover:bg-blue-700">
+                  <Button
+                    size="sm"
+                    className="text-sm bg-blue-600 hover:bg-blue-700"
+                  >
                     Kayıt Ol
                   </Button>
                 </Link>
@@ -198,23 +231,26 @@ export function Navbar() {
                     <nav className="flex-1 px-4 py-4">
                       <div className="space-y-2">
                         {navigationItems?.map((item) => (
-                          <Link 
-                            key={item.url} 
-                            href={item.url} 
+                          <Link
+                            key={item.url}
+                            href={item.url}
                             className={`block px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
-                              pathname === item.url 
+                              pathname === item.url
                                 ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
                                 : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50"
                             }`}
                           >
                             <div className="flex items-center gap-3">
-                              <IconRenderer iconName={item.icon} className="w-5 h-5" />
+                              <IconRenderer
+                                iconName={item.icon}
+                                className="w-5 h-5"
+                              />
                               {item.label}
                             </div>
                           </Link>
                         ))}
-                        
-                        <Link 
+
+                        <Link
                           href="/cart"
                           className={`block px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
                             pathname === "/cart"
@@ -226,8 +262,8 @@ export function Navbar() {
                             <div className="relative">
                               <ShoppingCart className="w-5 h-5" />
                               {totalItems > 0 && (
-                                <Badge 
-                                  variant="secondary" 
+                                <Badge
+                                  variant="secondary"
                                   className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-xs bg-blue-600 text-white"
                                 >
                                   {totalItems}
@@ -246,14 +282,19 @@ export function Navbar() {
                         <div className="space-y-4">
                           {/* User Info */}
                           <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                            <Head username={user?.username || "steve"} size={40} className="w-10 h-10 rounded-lg" />
+                            <Head
+                              username={user?.username || "steve"}
+                              size={40}
+                              className="w-10 h-10 rounded-lg"
+                            />
                             <div className="flex-1">
                               <p className="text-sm font-medium text-gray-900 dark:text-white">
                                 {user?.username}
                               </p>
                               <p className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
                                 <CoinsIcon className="w-3 h-3" />
-                                {formatBalance(user?.balance)} {website?.currency}
+                                {formatBalance(user?.balance)}{" "}
+                                {website?.currency}
                               </p>
                             </div>
                           </div>
@@ -273,10 +314,10 @@ export function Navbar() {
                             })}
                           </div>
 
-                          <Button 
+                          <Button
                             onClick={signOut}
-                            variant="outline" 
-                            size="sm" 
+                            variant="outline"
+                            size="sm"
                             className="w-full text-red-600 border-red-200 hover:bg-red-50"
                           >
                             <LogOut className="mr-2 h-4 w-4" />
@@ -296,12 +337,19 @@ export function Navbar() {
                           </div>
                           <div className="flex gap-2">
                             <Link href="/auth/sign-in" className="flex-1">
-                              <Button variant="outline" size="sm" className="w-full">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="w-full"
+                              >
                                 Giriş Yap
                               </Button>
                             </Link>
                             <Link href="/auth/sign-up" className="flex-1">
-                              <Button size="sm" className="w-full bg-blue-600 hover:bg-blue-700">
+                              <Button
+                                size="sm"
+                                className="w-full bg-blue-600 hover:bg-blue-700"
+                              >
                                 Kayıt Ol
                               </Button>
                             </Link>
