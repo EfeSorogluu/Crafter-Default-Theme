@@ -11,8 +11,8 @@ export async function GET(req: Request) {
 
   const isBedrock = port === '19132'
   const endpoint = isBedrock
-    ? `https://api.mcstatus.io/v2/status/bedrock/${ip}:${port}`
-    : `https://api.mcstatus.io/v2/status/java/${ip}:${port}`
+    ? `https://mcapi.tr/api/status/${ip}:${port}?bedrock=true`
+    : `https://mcapi.tr/api/status/${ip}:${port}`
 
   try {
     const res = await fetch(endpoint)
@@ -22,8 +22,10 @@ export async function GET(req: Request) {
 
     const data = await res.json()
 
+    console.log(data)
+
     return NextResponse.json({
-      online: data.online,
+      online: data.offline ? false : true,
       type: isBedrock ? 'bedrock' : 'java',
       players: data.players,
       version: data.version?.name,
