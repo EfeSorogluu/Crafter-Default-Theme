@@ -67,5 +67,6 @@ export interface User {
         };
     };
     bannedAt?: string;
+    nextVoteAt?: string;
 }
 
