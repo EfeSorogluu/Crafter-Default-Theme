@@ -34,7 +34,7 @@ export const useStaffFormService = () => {
     // Kullanıcının kendi başvurularını getir
     const getMyApplications = async (): Promise<StaffFormApplication[]> => {
         const response = await get<StaffFormApplication[]>(
-            `/staff-forms/my-applications`,
+            `/staff-forms/applications`,
             {},
             true
         );

@@ -65,7 +65,14 @@ export default function StaffFormsListPage() {
         <div className="mb-10 text-center">
           <FaClipboardList className="mx-auto text-5xl text-blue-500 mb-2" />
           <h1 className="text-4xl font-extrabold mb-2">Açık Pozisyonlar</h1>
-          <p className="text-gray-600 dark:text-gray-300 text-lg max-w-2xl mx-auto">Yetkili olmak için başvuru yapabileceğiniz güncel pozisyonlar ve formlar aşağıda listelenmiştir.</p>
+          <p className="text-gray-600 dark:text-gray-300 text-lg max-w-2xl mx-auto mb-6">Yetkili olmak için başvuru yapabileceğiniz güncel pozisyonlar ve formlar aşağıda listelenmiştir.</p>
+          <Button 
+            onClick={() => router.push('/staff-forms/applications')} 
+            className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-xl shadow-lg transition-all duration-200 hover:scale-105"
+          >
+            <FaCheckCircle className="inline mr-2" />
+            Mevcut Başvurularım
+          </Button>
         </div>
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {forms.length === 0 && (

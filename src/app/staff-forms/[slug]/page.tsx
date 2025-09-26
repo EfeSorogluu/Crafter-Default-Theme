@@ -161,7 +161,7 @@ export default function StaffFormPage() {
                   <Button
                     variant="outline"
                     className="mt-2 border-green-700 dark:border-green-300 text-green-700 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-800"
-                    onClick={() => router.push("/profile/applications")}
+                    onClick={() => router.push("/staff-forms/applications")}
                   >
                     Başvurularıma Git
                   </Button>

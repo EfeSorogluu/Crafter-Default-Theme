@@ -26,7 +26,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { AuthContext } from "@/lib/context/auth.context";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useMemo } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { WebsiteContext } from "@/lib/context/website.context";
 import { Avatar } from "./ui/avatar";
@@ -73,19 +73,21 @@ export function Navbar() {
 
   const navigationItems = website?.theme.navbar;
 
-  const userMenuItems = [
-    { href: "/profile", icon: User, label: "Profilim" },
-    { href: "/wallet", icon: Wallet, label: "Cüzdanım" },
-    { href: "/chest", icon: BoxIcon, label: "Sandığım" },
-    { href: "/settings", icon: Settings, label: "Ayarlar" },
-    {
-      href: `https://app.crafter.net.tr/cms/auth?websiteId=${WEBSITE_ID}&accessToken=${localStorage.getItem(
-        "accessToken"
-      )}&refreshToken=${localStorage.getItem("refreshToken")}`,
-      icon: Wrench,
-      label: "Yönetim Paneli",
-    },
-  ];
+  const userMenuItems = useMemo(() => {
+    const baseItems = [
+      { href: "/profile", icon: User, label: "Profilim" },
+      { href: "/wallet", icon: Wallet, label: "Cüzdanım" },
+      { href: "/chest", icon: BoxIcon, label: "Sandığım" },
+      { href: "/settings", icon: Settings, label: "Ayarlar" },
+    ];
+
+    // Admin panel item'ını sadece yetkisi varsa ekle
+    if (user?.role?.permissions?.length && user.role.permissions.length > 0) {
+      return [...baseItems, { href: "/admin", icon: Wrench, label: "Yönetim Paneli" }];
+    }
+
+    return baseItems;
+  }, [user?.role.permissions.length]);
 
   return (
     <header
