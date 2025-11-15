@@ -5,10 +5,10 @@ import {
   GetPunishmentsParams,
   PaginatedResponse,
 } from "../types/punishment";
-import { BACKEND_URL_WITH_WEBSITE_ID } from "../constants/base";
+import { BACKEND_URL } from "../constants/base";
 
 export const usePunishmentService = () => {
-  const { get } = useApi({ baseUrl: BACKEND_URL_WITH_WEBSITE_ID });
+  const { get } = useApi({ baseUrl: BACKEND_URL, useWebsiteId: true });
 
   // Punishments'ları ara
   const searchPunishments = async (

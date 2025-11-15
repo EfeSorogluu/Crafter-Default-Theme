@@ -1,12 +1,20 @@
 import { serverWebsiteService } from "@/lib/services/website.service";
 import { DEFAULT_APPCONFIG } from "@/lib/constants/pwa";
 import type { AppConfig } from "@/lib/types/app";
+import { headers } from 'next/headers';
 
 export async function getAppConfigDirect(): Promise<AppConfig> {
   try {
+    const headersList = await headers();
+    const websiteId = headersList.get('x-website-id') || process.env.NEXT_PUBLIC_WEBSITE_ID;
+    
+    if (!websiteId) {
+      return DEFAULT_APPCONFIG;
+    }
+
     const { getWebsite } = serverWebsiteService();
     const website = await getWebsite({
-      id: process.env.NEXT_PUBLIC_WEBSITE_ID,
+      id: websiteId,
     });
     return {
       appName: website.name,

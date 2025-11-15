@@ -1,5 +1,5 @@
 import { useApi } from "../hooks/useApi";
-import { BACKEND_URL_WITH_WEBSITE_ID } from "../constants/base";
+import { BACKEND_URL } from "../constants/base";
 import {
     WebsitePost,
     GetPostsParams,
@@ -9,7 +9,7 @@ import {
 } from "../types/posts";
 
 export const useWebsitePostsService = (websiteId?: string) => {
-    const { get, post, delete: del } = useApi({ baseUrl: BACKEND_URL_WITH_WEBSITE_ID });
+    const { get, post, delete: del } = useApi({ baseUrl: BACKEND_URL, useWebsiteId: true });
 
     const getPosts = async (data: { websiteId: string; params?: GetPostsParams }): Promise<PostsResponse> => {
         const response = await get<PostsResponse>(

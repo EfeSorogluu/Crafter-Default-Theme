@@ -1,12 +1,15 @@
 import { useApi } from '@/lib/hooks/useApi';
-import { BACKEND_URL_WITH_WEBSITE_ID } from '../constants/base';
+import { BACKEND_URL } from '../constants/base';
 import { Server } from '../types/server';
 
 export const useServerService = () => {
-    const { post, get } = useApi({ baseUrl: BACKEND_URL_WITH_WEBSITE_ID });
+    const { post, get } = useApi({ baseUrl: BACKEND_URL, useWebsiteId: true });
 
     const getServers = async (): Promise<Server[]> => {
-        const response = await get<Server[]>('/config/servers', {}, true);
+        const response = await get<Server[]>('/config/servers', {}, true).catch((e) => {
+            console.error(e)
+            return { data: [] as Server[] };
+        });
         return response.data;
     }
 

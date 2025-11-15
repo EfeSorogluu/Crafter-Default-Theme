@@ -1,5 +1,5 @@
 import { useApi } from "@/lib/hooks/useApi";
-import { BACKEND_URL, BACKEND_URL_WITH_WEBSITE_ID } from "../constants/base";
+import { BACKEND_URL } from "../constants/base";
 
 export interface ForumCategory {
     id: string;
@@ -88,7 +88,8 @@ export interface CreateForumReplyDto {
 
 export const useWebsiteForumService = () => {
     const { get, post, delete: del } = useApi({
-        baseUrl: BACKEND_URL_WITH_WEBSITE_ID,
+        baseUrl: BACKEND_URL,
+        useWebsiteId: true,
     });
 
     // Forum data operations

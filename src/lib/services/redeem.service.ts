@@ -1,5 +1,5 @@
 import { useApi } from "@/lib/hooks/useApi";
-import { BACKEND_URL_WITH_WEBSITE_ID } from "../constants/base";
+import { BACKEND_URL } from "../constants/base";
 
 export interface RedeemCodeResponse {
     success: boolean;
@@ -9,7 +9,7 @@ export interface RedeemCodeResponse {
 }
 
 export const useRedeemService = () => {
-    const { post } = useApi({ baseUrl: BACKEND_URL_WITH_WEBSITE_ID });
+    const { post } = useApi({ baseUrl: BACKEND_URL, useWebsiteId: true });
 
     const redeemCode = async (
         code: string

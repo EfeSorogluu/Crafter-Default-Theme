@@ -1,5 +1,5 @@
 import { useApi } from "@/lib/hooks/useApi";
-import { BACKEND_URL_WITH_WEBSITE_ID } from "../constants/base";
+import { BACKEND_URL } from "../constants/base";
 
 /**
  * @description Legal dokümanların veri yapısı.
@@ -15,7 +15,7 @@ export interface LegalDocuments {
  * @param websiteId - İşlem yapılacak web sitesinin kimliği.
  */
 export const useLegalService = () => {
-    const { get } = useApi({ baseUrl: BACKEND_URL_WITH_WEBSITE_ID });
+    const { get } = useApi({ baseUrl: BACKEND_URL, useWebsiteId: true });
 
     /**
      * @description Bir web sitesine ait legal dokümanları getirir.

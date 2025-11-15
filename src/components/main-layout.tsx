@@ -22,17 +22,23 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
   const [isSignupsLoading, setIsSignupsLoading] = useState(true);
 
   useEffect(() => {
+    // Website ID yüklenene kadar bekle
+    if (!website?.id) return;
+    
     getServers().then((servers) => {
       if (servers && servers.length > 0) {
         setServer(servers[0]);
       }
+    }).catch((error) => {
+      console.error('Failed to fetch servers:', error);
     });
+    
     // Fetch latest signups
     getStatistics().then((stats) => {
       setLatestSignups(stats?.latest?.signups || []);
       setIsSignupsLoading(false);
     }).catch(() => setIsSignupsLoading(false));
-  }, []);
+  }, [website?.id]);
 
   if (pathname.includes('auth') || pathname.includes('maintenance')) {
     return (children);

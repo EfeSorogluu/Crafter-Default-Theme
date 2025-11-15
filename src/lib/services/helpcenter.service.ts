@@ -1,5 +1,5 @@
 import { useApi } from "@/lib/hooks/useApi";
-import { BACKEND_URL, BACKEND_URL_WITH_WEBSITE_ID } from "../constants/base";
+import { BACKEND_URL } from "../constants/base";
 
 export interface HelpCenterCategory {
     id: string;
@@ -67,7 +67,8 @@ export interface GetHelpCenterDto {
 
 export const useWebsiteHelpCenterService = () => {
     const { get } = useApi({
-        baseUrl: BACKEND_URL_WITH_WEBSITE_ID,
+        baseUrl: BACKEND_URL,
+        useWebsiteId: true,
     });
 
     // Help Center data operations

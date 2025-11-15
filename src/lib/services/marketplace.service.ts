@@ -1,5 +1,5 @@
 import { useApi } from "@/lib/hooks/useApi";
-import { BACKEND_URL_WITH_WEBSITE_ID } from "../constants/base";
+import { BACKEND_URL } from "../constants/base";
 
 export type Coupon = {
   "id": string,
@@ -23,7 +23,7 @@ export type MarketplaceSettings = {
 };
 
 export const useMarketplaceService = () => {
-  const { post, get } = useApi({ baseUrl: BACKEND_URL_WITH_WEBSITE_ID });
+  const { post, get } = useApi({ baseUrl: BACKEND_URL, useWebsiteId: true });
 
   const purchaseProduct = async (
     productIds: string[],

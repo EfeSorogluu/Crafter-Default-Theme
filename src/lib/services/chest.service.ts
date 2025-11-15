@@ -1,9 +1,9 @@
 import { useApi } from "@/lib/hooks/useApi";
-import { BACKEND_URL_WITH_WEBSITE_ID } from "../constants/base";
+import { BACKEND_URL } from "../constants/base";
 import { ChestItem } from "../types/chest";
 
 export const useChestService = () => {
-  const { post, get } = useApi({ baseUrl: BACKEND_URL_WITH_WEBSITE_ID });
+  const { post, get } = useApi({ baseUrl: BACKEND_URL, useWebsiteId: true });
 
   const getChestItems = async (
     user_id: string
