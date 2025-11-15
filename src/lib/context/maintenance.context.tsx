@@ -37,7 +37,7 @@ export const MaintenanceProvider = ({
   const router = useRouter();
   const pathname = usePathname();
 
-    
+
   
   const redirectToMaintenance = () => {
     router.push("/maintenance");
@@ -51,12 +51,6 @@ export const MaintenanceProvider = ({
 
     const maintenanceActive = website.maintenance;
     setIsMaintenanceActive(maintenanceActive);
-
-    // Eğer maintenance sayfasındaysa ve maintenance aktif değilse ana sayfaya yönlendir
-    if (pathname === "/maintenance" && !maintenanceActive) {
-      router.push('/');
-      return;
-    }
 
     if (maintenanceActive) {
       // Sadece /auth/sign-in sayfasına izin ver
@@ -79,6 +73,12 @@ export const MaintenanceProvider = ({
       }
     } else {
       setCanAccessDuringMaintenance(true);
+      
+      // Eğer maintenance sayfasındaysa ve maintenance aktif değilse ana sayfaya yönlendir
+      if (pathname === "/maintenance") {
+        router.push('/');
+        return;
+      }
     }
 
     setIsLoading(false);

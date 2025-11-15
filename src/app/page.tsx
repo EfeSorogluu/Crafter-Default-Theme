@@ -224,6 +224,12 @@ export default function Home() {
 
   // Optimized data fetching
   const fetchData = useCallback(async () => {
+    // Website ID yüklenene kadar bekle
+    if (!website?.id) {
+      setIsLoading(false);
+      return;
+    }
+    
     try {
       const [servers, stats] = await Promise.all([
         getServers(),
@@ -242,10 +248,13 @@ export default function Home() {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [website?.id]);
 
   useEffect(() => {
     fetchData();
+  }, [fetchData]);
+
+  useEffect(() => {
     // Son gönderileri çek
     const fetchPosts = async () => {
       if (!website?.id) return; // id yoksa fetch etme

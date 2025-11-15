@@ -22,6 +22,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { AuthContext } from "@/lib/context/auth.context";
+import { WebsiteContext } from "@/lib/context/website.context";
 import { usePaymentService } from "@/lib/services/payment.service";
 import { PaymentProvider } from "@/lib/types/payment";
 
@@ -35,6 +36,7 @@ export default function BalancePage() {
     isLoading: userIsLoading,
     isAuthenticated,
   } = useContext(AuthContext);
+  const { website } = useContext(WebsiteContext);
 
   const { getPaymentProviders, initiatePayment, checkPayment } =
     usePaymentService();
@@ -89,10 +91,10 @@ export default function BalancePage() {
   };
 
   const checkPaymentFunc = async () => {
-    if (!paymentIdParam || !eventParam) return;
+    if (!paymentIdParam || !eventParam || !website?.id) return;
 
     const check = await checkPayment({
-      website_id: process.env.NEXT_PUBLIC_WEBSITE_ID as string,
+      website_id: website.id,
       payment_id: paymentIdParam,
     });
 
@@ -279,9 +281,19 @@ export default function BalancePage() {
         return;
       }
 
+      if (!website?.id) {
+        withReactContent(Swal).fire({
+          title: "Hata",
+          text: "Website bilgisi yüklenemedi. Lütfen sayfayı yenileyin.",
+          icon: "error",
+          confirmButtonText: "Tamam",
+        });
+        return;
+      }
+
       // Prepare payment data
       const paymentData = {
-        websiteId: process.env.NEXT_PUBLIC_WEBSITE_ID || "default",
+        websiteId: website.id,
         providerId: selectedPaymentProvider,
         amount: amount,
         currency: "TRY" as const,

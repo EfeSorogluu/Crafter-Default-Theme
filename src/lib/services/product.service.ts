@@ -1,11 +1,11 @@
 import { useApi } from "@/lib/hooks/useApi";
-import { BACKEND_URL_WITH_WEBSITE_ID } from "../constants/base";
+import { BACKEND_URL } from "../constants/base";
 import { User } from "../types/user";
 import { Category } from "../types/category";
 import { Product } from "../types/product";
 
 export const useProductService = () => {
-  const { post, get } = useApi({ baseUrl: BACKEND_URL_WITH_WEBSITE_ID });
+  const { post, get } = useApi({ baseUrl: BACKEND_URL, useWebsiteId: true });
 
   const getProductsByCategory = async (
     category_id: string

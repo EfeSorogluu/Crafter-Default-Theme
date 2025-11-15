@@ -36,11 +36,20 @@ export const WebsiteProvider = ({
         const response = await fetch("/api/website");
         const data = await response.json();
 
-        
-
         if (data.success) {
           setWebsite(data.website);
           setIsExpired(false);
+          
+          // Website ID'yi meta tag olarak ekle
+          if (data.website?.id && typeof document !== 'undefined') {
+            let metaTag = document.querySelector('meta[name="x-website-id"]');
+            if (!metaTag) {
+              metaTag = document.createElement('meta');
+              metaTag.setAttribute('name', 'x-website-id');
+              document.head.appendChild(metaTag);
+            }
+            metaTag.setAttribute('content', data.website.id);
+          }
         } else {
           setIsExpired(true);
           setError(data)

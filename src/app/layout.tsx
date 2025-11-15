@@ -1,38 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import { WebsiteProvider } from "@/lib/context/website.context";
-import { AuthProvider } from "@/lib/context/auth.context";
 import { PWAProvider } from "@/lib/context/pwa-provider.context";
-import PWAInstaller from "@/components/pwa-installer";
 import "@/styles/globals.css";
-import { MainLayout } from "@/components/main-layout";
 import { DEFAULT_APPCONFIG } from "@/lib/constants/pwa";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { AppConfig } from "@/lib/types/app";
-import { CartProvider } from "@/lib/context/cart.context";
 import { ThemeProviderWrapper } from "@/components/ThemeProviderWrapper";
 import { getAppConfigDirect } from "@/lib/services/app-config.service";
-import { StorePreloadManager } from "@/components/store/StorePreloadManager";
-import { MaintenanceProvider } from "@/lib/context/maintenance.context";
+import Providers from "./providers";
+import { headers } from "next/headers";
 
 async function getAppConfig(): Promise<AppConfig> {
-  if (typeof window === "undefined") {
-    // SSR/SSG
-    return getAppConfigDirect();
-  }
   try {
-    // Server-side fetch için absolute URL gerekli
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-    const url = `${baseUrl}/api/app-config`;
-
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      throw new Error(`Config API hatası: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data;
+    // Server component'te her zaman direct çağrı yap
+    return getAppConfigDirect();
   } catch (error) {
+    console.error("getAppConfig error:", error);
     // Varsayılan değerler
     return DEFAULT_APPCONFIG;
   }
@@ -151,6 +133,8 @@ interface RootLayoutProps {
 // RootLayout component'i aynı kalıyor
 export default async function RootLayout({ children }: RootLayoutProps) {
   const appConfig = await getAppConfig();
+  const headersList = await headers();
+  const websiteId = headersList.get("x-website-id") as string;
 
   return (
     <html lang="tr">
@@ -172,33 +156,6 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
 
-        {/* Preload critical resources */}
-        {process.env.NODE_ENV === "production" && (
-          <>
-            <link
-              rel="preload"
-              href="/api/manifest"
-              as="fetch"
-              crossOrigin="anonymous"
-            />
-            <link rel="preload" href={appConfig.favicon} as="image" />
-          </>
-        )}
-
-        {/* Resource hints */}
-        {process.env.NODE_ENV === "production" && (
-          <>
-            <link rel="prefetch" href="/store" />
-            <link rel="prefetch" href="/cart" />
-            <link rel="prefetch" href="/chest" />
-            <link rel="prefetch" href="/profile" />
-            <link rel="prefetch" href="/redeem" />
-            <link rel="prefetch" href="/wallet" />
-            <link rel="prefetch" href="/auth/sign-in" />
-            <link rel="prefetch" href="/auth/sign-up" />
-          </>
-        )}
-
         {/* Performance optimizations */}
         <meta
           name="viewport"
@@ -209,21 +166,11 @@ export default async function RootLayout({ children }: RootLayoutProps) {
       <body>
         <ThemeProviderWrapper>
           <PWAProvider initialConfig={appConfig}>
-            <WebsiteProvider>
-              <AuthProvider>
-                <MaintenanceProvider>
-                  <CartProvider>
-                    <MainLayout>{children}</MainLayout>
-                    <PWAInstaller />
-                    <StorePreloadManager />
-                  </CartProvider>
-                </MaintenanceProvider>
-              </AuthProvider>
-            </WebsiteProvider>
+            <Providers websiteId={websiteId}>{children}</Providers>
           </PWAProvider>
         </ThemeProviderWrapper>
+        {appConfig.gaId && <GoogleAnalytics gaId={appConfig.gaId} />}
       </body>
-      {appConfig.gaId && <GoogleAnalytics gaId={appConfig.gaId} />}
     </html>
   );
 }

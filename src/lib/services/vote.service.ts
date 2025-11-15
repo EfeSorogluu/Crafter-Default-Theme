@@ -1,12 +1,12 @@
 import { useApi } from '@/lib/hooks/useApi';
-import { BACKEND_URL_WITH_WEBSITE_ID } from '../constants/base';
+import { BACKEND_URL } from '../constants/base';
 import { 
   VoteProvider, 
   VoteResponse
 } from '../types/vote';
 
 export const useVoteService = () => {
-  const { get, post } = useApi({ baseUrl: BACKEND_URL_WITH_WEBSITE_ID });
+  const { get, post } = useApi({ baseUrl: BACKEND_URL, useWebsiteId: true });
 
   // Oy gönder
   const sendVote = async (providerId: string): Promise<VoteResponse> => {

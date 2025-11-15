@@ -43,20 +43,37 @@ export const useApi = ({
   headers = {
     'Content-Type': 'application/json'
   },
+  useWebsiteId = false,
+  websiteVersion = 'v1'
 }: {
   baseUrl?: string;
   headers?: Record<string, string>;
+  useWebsiteId?: boolean;
+  websiteVersion?: 'v1' | 'v2';
 }) => {
   const router = useRouter();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const refreshTokenQueue = useRef<(() => void)[]>([]);
+  
+  // Website ID'yi direkt localStorage'dan al
+  const websiteId = useWebsiteId && typeof window !== 'undefined' 
+    ? localStorage.getItem('websiteId') 
+    : null;
+
+  const finalBaseUrl = useWebsiteId && websiteId 
+    ? `${BACKEND_URL}/website/${websiteVersion === 'v2' ? 'v2/' : ''}${websiteId}`
+    : baseUrl;
 
   const api = useRef<AxiosInstance>(
     axios.create({
-      baseURL: baseUrl,
+      baseURL: finalBaseUrl,
       headers: headers,
     })
   );
+
+  useEffect(() => {
+    api.current.defaults.baseURL = finalBaseUrl;
+  }, [finalBaseUrl]);
 
   const processQueue = (error: AxiosError | null = null) => {
     refreshTokenQueue.current.forEach((prom) => {
@@ -94,6 +111,8 @@ export const useApi = ({
 
   const handleError = (error: AxiosError<ErrorResponse>): never => {
     const response = error.response?.data;
+
+    console.log('API Error Response:', error);
 
     if (!response) {
       throw {
@@ -188,6 +207,11 @@ export const useApi = ({
   const request = useCallback(
     async <T>(config: AxiosRequestConfig, authorize = true): Promise<ApiResponse<T>> => {
       try {
+        // Website ID gerekiyorsa ve henüz yüklenmediyse hata fırlat
+        if (useWebsiteId && !websiteId) {
+          throw new Error('Website ID is required but not available yet');
+        }
+
         if (authorize) {
           const token = localStorage.getItem('accessToken');
           if (token) {
@@ -208,7 +232,7 @@ export const useApi = ({
         throw error;
       }
     },
-    []
+    [useWebsiteId, websiteId]
   );
 
   return {
@@ -220,5 +244,6 @@ export const useApi = ({
       request<T>({ ...config, method: 'PUT', url, data }, authorize),
     delete: <T>(url: string, config?: AxiosRequestConfig, authorize = true) =>
       request<T>({ ...config, method: 'DELETE', url }, authorize),
+    isReady: !useWebsiteId || !!websiteId, // API hazır mı?
   };
 };

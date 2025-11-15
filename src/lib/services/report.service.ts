@@ -1,5 +1,5 @@
 import { useApi } from '@/lib/hooks/useApi';
-import { BACKEND_URL_WITH_WEBSITE_ID } from '../constants/base';
+import { BACKEND_URL } from '../constants/base';
 
 export interface Report {
     id: string;
@@ -13,7 +13,7 @@ export interface Report {
 }
 
 export const useReportService = () => {
-    const { post } = useApi({ baseUrl: BACKEND_URL_WITH_WEBSITE_ID });
+    const { post } = useApi({ baseUrl: BACKEND_URL, useWebsiteId: true });
 
     // Rapor oluştur
     const createReport = async (reportedUserId: string, data: { reason: string, reportType: string }): Promise<Report> => {

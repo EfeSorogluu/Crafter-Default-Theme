@@ -1,5 +1,5 @@
 import { useApi } from "@/lib/hooks/useApi";
-import { BACKEND_URL_WITH_WEBSITE_ID } from "../constants/base";
+import { BACKEND_URL } from "../constants/base";
 
 export interface TicketMessage {
   senderId: string;
@@ -60,7 +60,8 @@ export interface ReplyTicketDto {
 
 export const useWebsiteTicketService = () => {
   const { get, post } = useApi({
-    baseUrl: BACKEND_URL_WITH_WEBSITE_ID,
+    baseUrl: BACKEND_URL,
+    useWebsiteId: true,
   });
 
   // Ticket operations

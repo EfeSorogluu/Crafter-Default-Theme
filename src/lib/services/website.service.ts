@@ -1,6 +1,7 @@
-import { serverApi } from '@/lib/api/serverApi';
-import { Website } from '../types/website';
-import { License } from '../types/license';
+import { serverApi } from "@/lib/api/serverApi";
+import { Website } from "../types/website";
+import { License } from "../types/license";
+import { get } from "http";
 
 export interface CreateWebsiteRequest {
   name: string;
@@ -37,18 +38,33 @@ export interface RedeemCodeResponse {
 }
 
 export const serverWebsiteService = () => {
-  const createWebsite = async (data: CreateWebsiteRequest): Promise<Website> => {
-    const response = await serverApi.post<Website>('/website/create', data);
+  const createWebsite = async (
+    data: CreateWebsiteRequest
+  ): Promise<Website> => {
+    const response = await serverApi.post<Website>("/website/create", data);
     return response.data;
   };
 
-  const verifyLicenseKey = async (data: VerifyLicenseKeyRequest): Promise<VerifyLicenseKeyResponse> => {
-    const response = await serverApi.post<VerifyLicenseKeyResponse>('/website/key/verify', data);
+  const verifyLicenseKey = async (
+    data: VerifyLicenseKeyRequest
+  ): Promise<VerifyLicenseKeyResponse> => {
+    const response = await serverApi.post<VerifyLicenseKeyResponse>(
+      "/website/key/verify",
+      data
+    );
     return response.data;
   };
 
+  /**
+   * @deprecated Use getWebsiteById instead.
+   */
   const getWebsite = async (data: GetWebsiteRequest): Promise<Website> => {
-    const response = await serverApi.post<Website>('/website/get', data);
+    const response = await serverApi.post<Website>("/website/get", data);
+    return response.data;
+  };
+
+  const getWebsiteById = async (websiteId: string): Promise<Website> => {
+    const response = await serverApi.get<Website>(`/website/${websiteId}`);
     return response.data;
   };
 
@@ -56,5 +72,6 @@ export const serverWebsiteService = () => {
     createWebsite,
     verifyLicenseKey,
     getWebsite,
+    getWebsiteById,
   };
 };

@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { usePathname } from 'next/navigation';
+import { WebsiteContext } from '@/lib/context/website.context';
 
 interface PreloadConfig {
   path: string;
@@ -55,13 +56,15 @@ const STORE_PRELOAD_CONFIG: PreloadConfig[] = [
 
 export function StorePreloadManager() {
   const pathname = usePathname();
+  const { website } = useContext(WebsiteContext);
   const [preloadedPaths, setPreloadedPaths] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     const preloadForCurrentPath = async () => {
+      if (!website?.id) return;
+      
       const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
-      const websiteId = process.env.NEXT_PUBLIC_WEBSITE_ID;
-      const apiBase = `${baseUrl}/website/${websiteId}`;
+      const apiBase = `${baseUrl}/website/${website.id}`;
 
       // Find matching preload config
       const matchingConfig = STORE_PRELOAD_CONFIG.find(config => {

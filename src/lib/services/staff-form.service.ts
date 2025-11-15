@@ -1,9 +1,9 @@
 import { useApi } from '@/lib/hooks/useApi';
-import { BACKEND_URL_WITH_WEBSITE_ID } from '../constants/base';
+import { BACKEND_URL } from '../constants/base';
 import { StaffForm, StaffFormApplication, StaffFormApplicationValue } from '../types/staff-form';
 
 export const useStaffFormService = () => {
-    const { get, post } = useApi({ baseUrl: BACKEND_URL_WITH_WEBSITE_ID });
+    const { get, post } = useApi({ baseUrl: BACKEND_URL, useWebsiteId: true });
 
     // Tüm formları getir
     const getForms = async (): Promise<StaffForm[]> => {

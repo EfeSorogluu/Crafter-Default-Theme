@@ -1,5 +1,5 @@
 import { useApi } from "@/lib/hooks/useApi";
-import { BACKEND_URL, BACKEND_URL_WITH_WEBSITE_ID } from "../constants/base";
+import { BACKEND_URL } from "../constants/base";
 import { ChestItem } from "../types/chest";
 import {
   CheckPaymentData,
@@ -9,7 +9,7 @@ import {
 } from "../types/payment";
 
 export const usePaymentService = () => {
-  const { post, get } = useApi({ baseUrl: BACKEND_URL_WITH_WEBSITE_ID });
+  const { post, get } = useApi({ baseUrl: BACKEND_URL, useWebsiteId: true });
   const { post: postMain } = useApi({ baseUrl: BACKEND_URL });
 
   const getPaymentProviders = async (): Promise<PaymentProvider[]> => {

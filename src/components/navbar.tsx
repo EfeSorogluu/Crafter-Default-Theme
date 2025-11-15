@@ -34,7 +34,6 @@ import { useCart } from "@/lib/context/cart.context";
 import { Badge } from "./ui/badge";
 import { Head } from "./ui/head";
 import { IconRenderer } from "@/components/ui/icon-renderer";
-import { WEBSITE_ID } from "@/lib/constants/base";
 
 const formatBalance = (balance: number | undefined): string => {
   if (balance === undefined || balance === null) return "0.00";
