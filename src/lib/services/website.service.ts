@@ -1,7 +1,6 @@
 import { serverApi } from "@/lib/api/serverApi";
 import { Website } from "../types/website";
 import { License } from "../types/license";
-import { get } from "http";
 
 export interface CreateWebsiteRequest {
   name: string;

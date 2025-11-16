@@ -6,7 +6,7 @@ export async function GET() {
   const { getWebsiteById } = serverWebsiteService();
   const headersList = await headers();
   const websiteId = headersList.get("x-website-id") || "";
-  console.log("Website ID in API Route:", websiteId);
+  
   try {
     const website = await getWebsiteById(websiteId);
 
