@@ -4,6 +4,7 @@ export interface AppConfig {
   description: string;
   themeColor: string;
   backgroundColor: string;
+  url?: string;
   icon192: string;
   icon512: string;
   favicon: string;

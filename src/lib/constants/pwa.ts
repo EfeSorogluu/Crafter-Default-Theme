@@ -22,6 +22,7 @@ export const DEFAULT_MANIFEST = {
   background_color: "#ffffff",
   theme_color: "#000000",
   orientation: "portrait-primary",
+  url: "https://crafter.net.tr",
   icons: [
     {
       src: "https://crafter.net.tr/assets/favicon.ico",
