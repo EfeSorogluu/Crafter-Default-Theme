@@ -54,7 +54,7 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: appConfig.appName,
       images: [
         {
-          url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/og?title=${appConfig.appName}&description=${appConfig.description}&logo=${appConfig.icon192}&brand=${appConfig.appName}`,
+          url: `/api/og?title=${appConfig.appName}&description=${appConfig.description}&logo=${appConfig.icon192}&brand=${appConfig.appName}`,
           width: 1200,
           height: 630,
           alt: appConfig.appName,
