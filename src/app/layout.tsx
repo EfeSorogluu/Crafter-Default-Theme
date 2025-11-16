@@ -162,6 +162,8 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           content="width=device-width, initial-scale=1, maximum-scale=5"
         />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+
+
       </head>
       <body>
         <ThemeProviderWrapper>
@@ -170,6 +172,24 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           </PWAProvider>
         </ThemeProviderWrapper>
         {appConfig.gaId && <GoogleAnalytics gaId={appConfig.gaId} />}
+        {appConfig.tawkto?.isActive && appConfig.tawkto?.propertyId && appConfig.tawkto?.chatId && (
+          <script
+            type="text/javascript"
+            dangerouslySetInnerHTML={{
+              __html: `
+                var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+                (function(){
+                var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+                s1.async=true;
+                s1.src='https://embed.tawk.to/${appConfig.tawkto.propertyId}/${appConfig.tawkto.chatId}';
+                s1.charset='UTF-8';
+                s1.setAttribute('crossorigin','*');
+                s0.parentNode.insertBefore(s1,s0);
+                })();
+              `,
+            }}
+          />
+        )}
       </body>
     </html>
   );
