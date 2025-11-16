@@ -1,9 +1,10 @@
 [phases.setup]
-nixPkgs = ["nodejs_20", "npm-9_x"]
+nixPkgs = ["nodejs_20", "vips"]
 
 [phases.install]
 cmds = [
-  "npm ci --include=optional"
+  "npm ci --include=optional",
+  "npm install --cpu=x64 --os=linux sharp"
 ]
 
 [phases.build]
