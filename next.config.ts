@@ -18,6 +18,10 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'mc-heads.net',
+      },
+      {
+        protocol: 'https',
+        hostname: 'minotar.net',
       }
     ],
   },

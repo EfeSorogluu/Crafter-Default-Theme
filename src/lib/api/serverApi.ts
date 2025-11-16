@@ -43,8 +43,6 @@ const api: AxiosInstance = axios.create({
 const handleError = (error: AxiosError<ErrorResponse>) => {
   const response = error.response?.data;
 
-  console.log('API Error Response:', error);
-
   if (!response) {
     throw {
       message: 'An error occurred',

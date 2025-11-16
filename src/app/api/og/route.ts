@@ -106,7 +106,6 @@ export async function GET(request: NextRequest) {
     // URL parametrelerini al
     const title = searchParams.get('title') || 'CRAFTER';
     const brandName = searchParams.get('brand') || 'CRAFTER';
-    console.log("Brand Name:", brandName);
     const description = searchParams.get('description') || 'Professional hosting solutions for websites, game servers, and applications with robust infrastructure and expert support.';
     const background = searchParams.get('background') || 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)';
     

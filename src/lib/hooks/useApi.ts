@@ -112,8 +112,6 @@ export const useApi = ({
   const handleError = (error: AxiosError<ErrorResponse>): never => {
     const response = error.response?.data;
 
-    console.log('API Error Response:', error);
-
     if (!response) {
       throw {
         message: 'An error occurred',
