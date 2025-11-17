@@ -10,7 +10,8 @@ export const DEFAULT_APPCONFIG: AppConfig = {
   icon512: "https://crafter.net.tr/assets/favicon.ico",
   favicon: "https://crafter.net.tr/assets/favicon.ico",
   gaId: null,
-  keywords: ["crafter", "website"]
+  keywords: ["crafter", "website"],
+  tawkto: null,
 };
 
 export const DEFAULT_MANIFEST = {

@@ -10,6 +10,11 @@ export interface AppConfig {
   favicon: string;
   gaId: string | null;
   keywords: string[];
+  tawkto: {
+    isActive: boolean;
+    propertyId: string;
+    chatId: string;
+  } | null;
 }
 
 export interface ManifestIcon {
