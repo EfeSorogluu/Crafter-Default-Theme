@@ -54,7 +54,7 @@ export function useStorePreload() {
     const preloadAPIs = async () => {
       try {
         const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
-        const websiteId = process.env.NEXT_PUBLIC_WEBSITE_ID;
+        const websiteId = localStorage.getItem("websiteId") as string;
         const apiBase = `${baseUrl}/website/${websiteId}`;
 
         // Preload server list - from server.service.ts: getServers()

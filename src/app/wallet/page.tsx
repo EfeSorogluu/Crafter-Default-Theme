@@ -92,7 +92,7 @@ export default function BalancePage() {
     if (!paymentIdParam || !eventParam) return;
 
     const check = await checkPayment({
-      website_id: process.env.NEXT_PUBLIC_WEBSITE_ID as string,
+      website_id: localStorage.getItem("websiteId") as string,
       payment_id: paymentIdParam,
     });
 
@@ -277,7 +277,7 @@ export default function BalancePage() {
 
       // Prepare payment data
       const paymentData = {
-        websiteId: process.env.NEXT_PUBLIC_WEBSITE_ID || "default",
+        websiteId: localStorage.getItem("websiteId") as string,
         providerId: selectedPaymentProvider,
         amount: amount,
         currency: "TRY" as const,
