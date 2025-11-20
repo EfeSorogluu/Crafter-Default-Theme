@@ -5,7 +5,7 @@ export function middleware(request: NextRequest) {
   const headers = new Headers(request.headers);
   headers.set("x-current-path", request.nextUrl.pathname);
   const websiteId = headers.get("x-website-id");
-  
+
   // _next isteklerini her zaman geçir
   if (request.nextUrl.pathname.startsWith("/_next")) {
     return NextResponse.next({ headers });
@@ -13,6 +13,8 @@ export function middleware(request: NextRequest) {
 
   if (websiteId) {
     headers.set("x-website-id", websiteId);
+  } else if (process.env.NODE_ENV !== "production" && process.env.NEXT_PUBLIC_WEBSITE_ID) {
+    headers.set("x-website-id", process.env.NEXT_PUBLIC_WEBSITE_ID)
   } else {
     return NextResponse.redirect("https://crafter.net.tr");
   }
