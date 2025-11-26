@@ -17,6 +17,8 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
+export { CartContext };
+
 const STORAGE_KEY = "cart";
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
