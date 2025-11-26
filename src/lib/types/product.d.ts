@@ -1,3 +1,12 @@
+export interface SelectedAddon {
+  addonId: string;
+  features: Array<{
+    featureId: string;
+    included: boolean;
+    customValue?: string | null;
+  }>;
+}
+
 export type Product = {
   slug: Key | null | undefined;
   id: string;
@@ -13,4 +22,6 @@ export type Product = {
   updatedAt: string;
   discountType: "fixed" | "percentage";
   discountValue: number;
+  server_commands?: string[];
+  selectedAddons?: SelectedAddon[];
 };

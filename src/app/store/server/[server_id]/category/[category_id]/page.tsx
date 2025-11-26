@@ -14,6 +14,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import ProductComparisonTable from "@/components/store/ProductComparisonTable";
 import {
   Package2,
   Grid3X3,
@@ -177,7 +178,7 @@ export default function CategoryPage({
             <div className="flex items-center justify-between">
               <CardTitle className="text-xl font-semibold text-gray-800 dark:text-gray-200 flex items-center gap-2">
                 <Package2 className="h-5 w-5" />
-                Ürünler
+                {category.type === 'single_products' ? 'Ürün Karşılaştırma' : 'Ürünler'}
               </CardTitle>
               {totalProducts > 0 && (
                 <Badge
@@ -205,8 +206,14 @@ export default function CategoryPage({
                   tekrar kontrol edin.
                 </p>
               </div>
+            ) : category.type === 'single_products' ? (
+              // Comparison Table for Single Products
+              <ProductComparisonTable 
+                category={category} 
+                products={products || []} 
+              />
             ) : (
-              // Products Grid with Progressive Loading
+              // Products Grid with Progressive Loading for Listed Products
               <ProgressiveLoader
                 items={products || []}
                 renderItem={(product: Product, index) => (
