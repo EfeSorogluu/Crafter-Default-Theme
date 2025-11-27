@@ -137,7 +137,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   const websiteId = headersList.get("x-website-id") as string;
 
   return (
-    <html lang="tr">
+    <html lang="tr" suppressHydrationWarning>
       <head>
         {/* Preconnect to external domains */}
         <link rel="preconnect" href={process.env.NEXT_PUBLIC_BACKEND_URL} />
@@ -165,7 +165,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 
 
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <ThemeProviderWrapper>
           <PWAProvider initialConfig={appConfig}>
             <Providers websiteId={websiteId}>{children}</Providers>
