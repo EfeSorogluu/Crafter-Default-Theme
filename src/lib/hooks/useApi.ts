@@ -17,18 +17,21 @@ interface ValidationError {
   message: string[];
   error: string;
   statusCode: number;
+  requiresEmailUpdate?: boolean;
 }
 
 interface CustomError {
   success: boolean;
   message: string;
   type: ErrorType;
+  requiresEmailUpdate?: boolean;
 }
 
 interface ApiError {
   message: string | string[];
   status: number;
   type?: ErrorType;
+  requiresEmailUpdate?: boolean;
 }
 
 interface RefreshTokenResponse {
@@ -117,6 +120,26 @@ export const useApi = ({
         message: 'An error occurred',
         status: error.response?.status || 500,
       };
+    }
+
+    // Check for email update requirement
+    if ('requiresEmailUpdate' in response && response.requiresEmailUpdate === true) {
+      if (typeof window !== 'undefined') {
+        import('sweetalert2').then(({ default: Swal }) => {
+          Swal.fire({
+            icon: 'warning',
+            title: 'E-posta Güncelleme Gerekli',
+            text: 'Devam etmek için lütfen e-posta adresinizi güncelleyiniz.',
+            confirmButtonText: 'Tamam',
+            toast: true,
+            position: 'top-end',
+            timer: 5000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
+        });
+        window.location.href = '/profile?activeTab=settings';
+      }
     }
 
     // Handle validation errors
