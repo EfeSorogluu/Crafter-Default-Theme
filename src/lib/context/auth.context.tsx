@@ -4,6 +4,7 @@ import { createContext, useEffect, useState } from "react";
 import { SignUpRequest, ForgotPasswordRequest, ResetPasswordRequest, useAuthService } from "@/lib/services/auth.service";
 import { User } from "@/lib/types/user";
 import Loading from "@/components/loading";
+import Swal from "sweetalert2";
 
 export const AuthContext = createContext<{
   user: User | null;
@@ -35,12 +36,43 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  const checkEmailUpdate = (email: string | null | undefined): boolean => {
+    // Prevent infinite redirect loop - skip if already on settings page
+    if (typeof window !== 'undefined' && 
+        window.location.pathname === '/profile' && 
+        window.location.search.includes('activeTab=settings')) {
+      return false;
+    }
+
+    // Check for invalid email patterns
+    if (!email || email.trim() === "" || email.endsWith("@temp.com")) {
+      Swal.fire({
+        icon: "warning",
+        title: "E-posta Güncelleme Gerekli",
+        text: "Devam etmek için lütfen e-posta adresinizi güncelleyiniz.",
+        confirmButtonText: "Tamam",
+        toast: true,
+        position: "top-end",
+        timer: 5000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
+      
+      if (typeof window !== 'undefined') {
+        window.location.href = "/profile?activeTab=settings";
+      }
+      return true;
+    }
+    return false;
+  };
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const user = await getMe();
         setUser(user);
         setIsAuthenticated(true);
+        checkEmailUpdate(user.email);
       } catch (error) {
         setIsAuthenticated(false);
       } finally {
@@ -128,6 +160,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const user = await getMe();
       setUser(user);
       setIsAuthenticated(true);
+      // Skip email check on manual refresh to prevent loops
     } catch (error) {
       setIsAuthenticated(false);
     } finally {
