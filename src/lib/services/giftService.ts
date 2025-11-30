@@ -1,49 +1,26 @@
 import { useApi } from "@/lib/hooks/useApi";
 import { GiftItem, SendGiftRequest, SendGiftResponse } from "@/lib/types/gift";
+import { ChestItem } from "@/lib/types/chest";
 
-// Gift service following the same pattern as ChestService 
+// Gift service following the same pattern as ChestService
 export class GiftService {
   private api: ReturnType<typeof useApi>;
+  private chestApi: ReturnType<typeof useApi>;
 
   constructor() {
     this.api = useApi({ websiteVersion: "v2" }); // Using v2 like the backend controller
+    this.chestApi = useApi({ websiteVersion: "v1" }); // Using v1 for chest API
   }
 
-  // TODO: Bu method henüz eklenmedi - Backend'de implement edilmeli
-  /**
-   * Get all gifts sent by a user
-   * @param userId - User ID or "me"
-   */
-  async getSentGifts(userId: string): Promise<GiftItem[]> {
-    const response = await this.api.get<GiftItem[]>(
-      `/users/${userId}/gifts/sent`,
-      {},
-      true
-    );
-    return response.data;
-  }
 
-  // TODO: Bu method henüz eklenmedi - Backend'de implement edilmeli
-  /**
-   * Get all gifts received by a user
-   * @param userId - User ID or "me"
-   */
-  async getReceivedGifts(userId: string): Promise<GiftItem[]> {
-    const response = await this.api.get<GiftItem[]>(
-      `/users/${userId}/gifts/received`,
-      {},
-      true
-    );
-    return response.data;
-  }
 
   /**
    * Send balance as a gift to another user
-   * Uses the same endpoint as balance transfer in the backend
+   * Uses the balance transfer endpoint
    * @param userId - Sender user ID or "me"
    * @param giftData - Gift data including targetUserId and amount
    */
-  async sendGift(
+  async sendBalanceGift(
     userId: string,
     giftData: SendGiftRequest
   ): Promise<SendGiftResponse> {
@@ -52,6 +29,7 @@ export class GiftService {
       {
         targetUserId: giftData.targetUserId,
         amount: giftData.amount,
+        message: giftData.message,
       },
       {},
       true
@@ -60,56 +38,34 @@ export class GiftService {
     return response.data;
   }
 
-  // TODO: Bu method henüz eklenmedi - Backend'de implement edilmeli
   /**
-   * Get gift details by ID
-   * @param userId - User ID or "me"
-   * @param giftId - Gift ID
+   * Send a chest item as a gift to another user
+   * @param websiteId - Website ID
+   * @param userId - Sender user ID or "me"
+   * @param toUserId - Receiver user ID
+   * @param chestItemId - Chest item ID to gift
    */
-  async getGiftById(userId: string, giftId: string): Promise<GiftItem> {
-    const response = await this.api.get<GiftItem>(
-      `/users/${userId}/gifts/${giftId}`,
+  async sendChestItemGift(
+    websiteId: string,
+    userId: string,
+    toUserId: string,
+    chestItemId: string
+  ): Promise<{ success: boolean; message: string; chestItem?: ChestItem }> {
+    const response = await this.chestApi.post<{
+      success: boolean;
+      message: string;
+      chestItem?: ChestItem;
+    }>(
+      `/chest/${userId}/gift/${toUserId}/${chestItemId}`,
+      {},
       {},
       true
     );
-    return response.data;
-  }
-
-  // TODO: Bu method henüz eklenmedi - Backend'de implement edilmeli
-  /**
-   * Accept a received gift
-   * @param userId - User ID or "me"
-   * @param giftId - Gift ID
-   */
-  async acceptGift(
-    userId: string,
-    giftId: string
-  ): Promise<{ success: boolean; message: string }> {
-    const response = await this.api.post<{
-      success: boolean;
-      message: string;
-    }>(`/users/${userId}/gifts/${giftId}/accept`, {}, {}, true);
 
     return response.data;
   }
 
-  // TODO: Bu method henüz eklenmedi - Backend'de implement edilmeli
-  /**
-   * Reject a received gift
-   * @param userId - User ID or "me"
-   * @param giftId - Gift ID
-   */
-  async rejectGift(
-    userId: string,
-    giftId: string
-  ): Promise<{ success: boolean; message: string }> {
-    const response = await this.api.post<{
-      success: boolean;
-      message: string;
-    }>(`/users/${userId}/gifts/${giftId}/reject`, {}, {}, true);
 
-    return response.data;
-  }
 }
 
 // Client-side instance

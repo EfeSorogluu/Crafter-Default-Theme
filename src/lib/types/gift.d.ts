@@ -21,6 +21,7 @@ export interface GiftItem {
 export interface SendGiftRequest {
   targetUserId: string;
   amount: number;
+  message?: string;
 }
 
 export interface SendGiftResponse {
