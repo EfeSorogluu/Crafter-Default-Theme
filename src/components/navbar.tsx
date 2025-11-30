@@ -14,6 +14,7 @@ import {
   Bell,
   Settings,
   Wrench,
+  Gift,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -77,6 +78,7 @@ export function Navbar() {
       { href: "/profile", icon: User, label: "Profilim" },
       { href: "/wallet", icon: Wallet, label: "Cüzdanım" },
       { href: "/chest", icon: BoxIcon, label: "Sandığım" },
+      { href: "/gift", icon: Gift, label: "Hediye" },
       { href: "/settings", icon: Settings, label: "Ayarlar" },
     ];
 
