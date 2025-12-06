@@ -62,6 +62,7 @@ export const useWebsiteTicketService = () => {
   const { get, post } = useApi({
     baseUrl: BACKEND_URL,
     useWebsiteId: true,
+    websiteVersion: 'v2'
   });
 
   // Ticket operations
