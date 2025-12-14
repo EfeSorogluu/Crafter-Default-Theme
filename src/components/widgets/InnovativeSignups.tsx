@@ -17,18 +17,17 @@ function useIsMobile() {
   return isMobile;
 }
 
-export default function InnovativeSignups({ signups }: { signups: any[] }) {
+export default function InnovativeSignups({ signups, totalUsers }: { signups: any[], totalUsers: number }) {
   const isMobile = useIsMobile();
   // Mobilde son 3, masaüstünde tüm kayıtlar
   const displaySignups = isMobile ? (signups ? signups.slice(-5) : []) : (signups || []);
-  const total = signups?.length || 0;
 
   return (
     <div className="w-full flex flex-col md:flex-row overflow-hidden shadow-xl pt-10">
       {/* Sol Panel - degrade her zaman görünür, tema uyumlu */}
       <div className="flex flex-col justify-start items-start w-full md:w-1/4 min-w-0 bg-gradient-to-br from-blue-500 via-blue-400 to-blue-300 dark:from-blue-600 dark:via-blue-500 dark:to-blue-400 pt-6 pb-2 px-4 md:pt-8 md:pb-0 md:px-6 rounded-t-2xl rounded-b-none md:rounded-tl-2xl md:rounded-tr-none md:rounded-bl-none md:rounded-br-none">
         <h3 className="text-gray-900 text-white text-lg sm:text-xl md:text-2xl font-bold mb-1 md:mb-2 drop-shadow dark:drop-shadow-none">Son Kayıtlar</h3>
-        <p className="text-gray-800/90 dark:text-white/90 text-white text-xs sm:text-sm md:text-base font-medium mb-1">Sunucumuza kayıt olan son <span className="font-bold">{total}</span> oyuncu!</p>
+        <p className="text-gray-800/90 dark:text-white/90 text-white text-xs sm:text-sm md:text-base font-medium mb-1">Sunucumuza kayıt olan toplam <span className="font-bold">{totalUsers}</span> oyuncu!</p>
       </div>
       {/* Sağ Panel */}
       <div className="w-full md:w-3/4 flex items-center justify-center px-2 md:px-6 py-4 md:py-6 gap-2 md:gap-8 rounded-t-none rounded-b-none md:rounded-tr-2xl md:rounded-bl-none md:rounded-br-none bg-white dark:bg-[#0a1121] transition-colors">
