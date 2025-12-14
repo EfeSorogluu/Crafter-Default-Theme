@@ -2,7 +2,11 @@
 
 import { Category } from "@/lib/types/category";
 import { Product } from "@/lib/types/product";
-import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 import { Check, X, Info, ShoppingCart } from "lucide-react";
 import { useContext } from "react";
 import { useCart } from "@/lib/context/cart.context";
@@ -16,9 +20,9 @@ interface ProductComparisonTableProps {
   products: Product[];
 }
 
-export default function ProductComparisonTable({ 
-  category, 
-  products 
+export default function ProductComparisonTable({
+  category,
+  products,
 }: ProductComparisonTableProps) {
   const { addToCart } = useCart();
   const { website } = useContext(WebsiteContext);
@@ -48,21 +52,21 @@ export default function ProductComparisonTable({
   };
 
   const getFeatureValue = (
-    product: Product, 
-    addonId: string, 
+    product: Product,
+    addonId: string,
     featureId: string
   ): { included: boolean; customValue?: string | null } => {
     if (!product.selectedAddons) return { included: false };
-    
-    const addon = product.selectedAddons.find(a => a.addonId === addonId);
+
+    const addon = product.selectedAddons.find((a) => a.addonId === addonId);
     if (!addon) return { included: false };
-    
-    const feature = addon.features.find(f => f.featureId === featureId);
+
+    const feature = addon.features.find((f) => f.featureId === featureId);
     if (!feature) return { included: false };
-    
+
     return {
       included: feature.included === true,
-      customValue: feature.customValue
+      customValue: feature.customValue,
     };
   };
 
@@ -70,17 +74,19 @@ export default function ProductComparisonTable({
     <div className="w-full overflow-x-auto">
       <div className="min-w-[800px]">
         {/* Ürün Başlıkları - Resim, İsim, Açıklama */}
-        <div 
-          className="grid gap-4 mb-6" 
-          style={{ gridTemplateColumns: `250px repeat(${products.length}, 1fr)` }}
+        <div
+          className="grid gap-4 mb-6"
+          style={{
+            gridTemplateColumns: `250px repeat(${products.length}, 1fr)`,
+          }}
         >
           {/* Boş köşe */}
           <div className="p-4"></div>
-          
+
           {/* Ürün kartları */}
           {products.map((product) => (
-            <Card 
-              key={product.id} 
+            <Card
+              key={product.id}
               className="border-2 border-purple-200 dark:border-purple-700 rounded-xl p-4 flex flex-col items-center gap-3 bg-white dark:bg-gray-800"
             >
               {/* Ürün Resmi */}
@@ -98,22 +104,22 @@ export default function ProductComparisonTable({
                   </div>
                 )}
               </div>
-              
+
               {/* Ürün İsmi */}
               <h3 className="font-bold text-lg text-center line-clamp-2 text-gray-900 dark:text-gray-100">
                 {product.name}
               </h3>
-              
+
               {/* Ürün Açıklaması */}
               <p className="text-sm text-gray-600 dark:text-gray-400 text-center line-clamp-3">
                 {product.description}
               </p>
-              
+
               {/* Fiyat */}
               <div className="text-xl font-bold text-purple-600 dark:text-purple-400">
                 {formatPrice(product.price)}
               </div>
-              
+
               {/* Sepete Ekle Butonu */}
               <Button
                 onClick={() => handleAddToCart(product)}
@@ -136,18 +142,20 @@ export default function ProductComparisonTable({
                   {addon.title}
                 </h4>
               </div>
-              
+
               {/* Özellikler */}
               {addon.features.map((feature, featureIndex) => (
                 <div
                   key={feature.id}
                   className={`grid gap-4 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${
-                    featureIndex === addon.features.length - 1 && 
-                    addonIndex === category.addons!.length - 1 
-                      ? 'border-b-0' 
-                      : ''
+                    featureIndex === addon.features.length - 1 &&
+                    addonIndex === category.addons!.length - 1
+                      ? "border-b-0"
+                      : ""
                   }`}
-                  style={{ gridTemplateColumns: `250px repeat(${products.length}, 1fr)` }}
+                  style={{
+                    gridTemplateColumns: `250px repeat(${products.length}, 1fr)`,
+                  }}
                 >
                   {/* Özellik İsmi ve Info */}
                   <div className="p-4 flex items-center gap-2">
@@ -165,13 +173,17 @@ export default function ProductComparisonTable({
                       </TooltipContent>
                     </Tooltip>
                   </div>
-                  
+
                   {/* Her ürün için bu özelliğin durumu */}
                   {products.map((product) => {
-                    const featureValue = getFeatureValue(product, addon.id, feature.id);
+                    const featureValue = getFeatureValue(
+                      product,
+                      addon.id,
+                      feature.id
+                    );
                     return (
-                      <div 
-                        key={product.id} 
+                      <div
+                        key={product.id}
                         className="p-4 flex items-center justify-center"
                       >
                         {featureValue.included ? (
@@ -180,7 +192,10 @@ export default function ProductComparisonTable({
                               {featureValue.customValue}
                             </span>
                           ) : (
-                            <Check className="w-6 h-6 text-green-500" strokeWidth={3} />
+                            <Check
+                              className="w-6 h-6 text-green-500"
+                              strokeWidth={3}
+                            />
                           )
                         ) : (
                           <X className="w-6 h-6 text-red-500" strokeWidth={3} />

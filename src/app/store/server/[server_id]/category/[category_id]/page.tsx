@@ -178,7 +178,7 @@ export default function CategoryPage({
             <div className="flex items-center justify-between">
               <CardTitle className="text-xl font-semibold text-gray-800 dark:text-gray-200 flex items-center gap-2">
                 <Package2 className="h-5 w-5" />
-                {category.type === 'single_products' ? 'Ürün Karşılaştırma' : 'Ürünler'}
+                Ürünler
               </CardTitle>
               {totalProducts > 0 && (
                 <Badge
@@ -206,14 +206,14 @@ export default function CategoryPage({
                   tekrar kontrol edin.
                 </p>
               </div>
-            ) : category.type === 'single_products' ? (
-              // Comparison Table for Single Products
+            ) : category.type === 'listed_products' ? (
+              // Comparison Table for Listed Products
               <ProductComparisonTable 
                 category={category} 
                 products={products || []} 
               />
             ) : (
-              // Products Grid with Progressive Loading for Listed Products
+              // Products Grid for Single Products
               <ProgressiveLoader
                 items={products || []}
                 renderItem={(product: Product, index) => (
