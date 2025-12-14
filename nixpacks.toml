@@ -6,7 +6,7 @@ cmds = [
   "npm ci --omit=optional",
   "rm -rf node_modules/sharp node_modules/lightningcss node_modules/@tailwindcss",
   "npm install --cpu=x64 --os=linux sharp lightningcss",
-  "npm install --cpu=x64 --os=linux @tailwindcss/postcss @tailwindcss/oxide-linux-x64-gnu @tailwindcss/oxide-linux-x64-musl"
+  "npm install --force @tailwindcss/postcss @tailwindcss/oxide-linux-x64-gnu"
 ]
 
 [phases.build]
