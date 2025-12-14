@@ -1,6 +1,6 @@
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
-import { BACKEND_URL } from '../constants/base';
-import { ErrorMessages, ErrorType } from '../constants/errors';
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
+import { BACKEND_URL } from "../constants/base";
+import { ErrorMessages, ErrorType } from "../constants/errors";
 
 interface ApiResponse<T> {
   data: T;
@@ -35,8 +35,8 @@ interface ErrorResponse {
 const api: AxiosInstance = axios.create({
   baseURL: BACKEND_URL,
   headers: {
-    'Content-Type': 'application/json',
-    'Origin': process.env.NEXT_PUBLIC_BASE_URL || ""
+    "Content-Type": "application/json",
+    Origin: process.env.NEXT_PUBLIC_BASE_URL || "",
   },
 });
 
@@ -45,7 +45,7 @@ const handleError = (error: AxiosError<ErrorResponse>) => {
 
   if (!response) {
     throw {
-      message: 'An error occurred',
+      message: "An error occurred",
       status: error.response?.status || 500,
     };
   }
@@ -57,7 +57,11 @@ const handleError = (error: AxiosError<ErrorResponse>) => {
     };
   }
 
-  if ('type' in response && response.type && Object.values(ErrorType).includes(response.type)) {
+  if (
+    "type" in response &&
+    response.type &&
+    Object.values(ErrorType).includes(response.type)
+  ) {
     throw {
       message: ErrorMessages[response.type] || response.message,
       status: error.response?.status || 500,
@@ -66,13 +70,17 @@ const handleError = (error: AxiosError<ErrorResponse>) => {
   }
 
   throw {
-    message: response.message || 'An error occurred',
+    message: response.message || "An error occurred",
     status: error.response?.status || 500,
   };
 };
 
 export const serverApi = {
-  get: async <T>(url: string, config?: AxiosRequestConfig, token?: string): Promise<ApiResponse<T>> => {
+  get: async <T>(
+    url: string,
+    config?: AxiosRequestConfig,
+    token?: string
+  ): Promise<ApiResponse<T>> => {
     try {
       const headers = token
         ? { ...(config?.headers || {}), Authorization: `Bearer ${token}` }
@@ -86,7 +94,12 @@ export const serverApi = {
     }
   },
 
-  post: async <T>(url: string, data?: any, config?: AxiosRequestConfig, token?: string): Promise<ApiResponse<T>> => {
+  post: async <T>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig,
+    token?: string
+  ): Promise<ApiResponse<T>> => {
     try {
       const headers = token
         ? { ...(config?.headers || {}), Authorization: `Bearer ${token}` }
@@ -100,7 +113,12 @@ export const serverApi = {
     }
   },
 
-  put: async <T>(url: string, data?: any, config?: AxiosRequestConfig, token?: string): Promise<ApiResponse<T>> => {
+  put: async <T>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig,
+    token?: string
+  ): Promise<ApiResponse<T>> => {
     try {
       const headers = token
         ? { ...(config?.headers || {}), Authorization: `Bearer ${token}` }
@@ -114,7 +132,11 @@ export const serverApi = {
     }
   },
 
-  delete: async <T>(url: string, config?: AxiosRequestConfig, token?: string): Promise<ApiResponse<T>> => {
+  delete: async <T>(
+    url: string,
+    config?: AxiosRequestConfig,
+    token?: string
+  ): Promise<ApiResponse<T>> => {
     try {
       const headers = token
         ? { ...(config?.headers || {}), Authorization: `Bearer ${token}` }
