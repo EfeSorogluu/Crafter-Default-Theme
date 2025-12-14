@@ -5,8 +5,10 @@ import { headers } from "next/headers";
 export async function GET() {
   const { getWebsiteById } = serverWebsiteService();
   const headersList = await headers();
-  const websiteId = headersList.get("x-website-id") || "";
-  
+  const websiteId =
+    headersList.get("x-website-id") || process.env.NEXT_PUBLIC_WEBSITE_ID || "";
+
+
   try {
     const website = await getWebsiteById(websiteId);
 
@@ -38,7 +40,7 @@ export async function GET() {
       isExpired: false,
     });
   } catch (error: any) {
-    console.error(error);
+    console.error("error:", error);
 
     return NextResponse.json(
       error && error.status

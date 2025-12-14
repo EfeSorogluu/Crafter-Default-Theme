@@ -22,8 +22,6 @@ export async function GET(req: Request) {
 
     const data = await res.json()
 
-    console.log(data)
-
     return NextResponse.json({
       online: data.offline ? false : true,
       type: isBedrock ? 'bedrock' : 'java',

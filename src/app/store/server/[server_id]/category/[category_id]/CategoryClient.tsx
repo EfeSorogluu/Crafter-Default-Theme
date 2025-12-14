@@ -14,6 +14,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import ProductComparisonTable from "@/components/store/ProductComparisonTable";
 import {
   Package2,
   Grid3X3,
@@ -205,8 +206,14 @@ export default function CategoryPage({
                   tekrar kontrol edin.
                 </p>
               </div>
+            ) : category.type === 'listed_products' ? (
+              // Comparison Table for Listed Products
+              <ProductComparisonTable 
+                category={category} 
+                products={products || []} 
+              />
             ) : (
-              // Products Grid with Progressive Loading
+              // Products Grid for Single Products
               <ProgressiveLoader
                 items={products || []}
                 renderItem={(product: Product, index) => (
