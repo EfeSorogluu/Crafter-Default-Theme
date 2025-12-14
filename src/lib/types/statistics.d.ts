@@ -35,4 +35,5 @@ export interface IPublicWebsiteStatistics {
     signups: IEnrichedSignupPublic[];
   };
   topCreditLoaders: IEnrichedTopLoader[];
+  totalUsers: number;
 }

@@ -19,6 +19,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
   const { getStatistics } = useStatisticsService();
   const [server, setServer] = useState<Server | null>(null);
   const [latestSignups, setLatestSignups] = useState<any[]>([]);
+  const [totalUsers, setTotalUsers] = useState<number>(0);
   const [isSignupsLoading, setIsSignupsLoading] = useState(true);
 
   useEffect(() => {
@@ -36,6 +37,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
     // Fetch latest signups
     getStatistics().then((stats) => {
       setLatestSignups(stats?.latest?.signups || []);
+      setTotalUsers(stats?.totalUsers || 0);
       setIsSignupsLoading(false);
     }).catch(() => setIsSignupsLoading(false));
   }, [website?.id]);
@@ -52,7 +54,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
       <main>{children}</main>
       {/* Son Kayıt Olanlar - Footer'ın hemen üstünde */}
       {!isSignupsLoading && latestSignups && latestSignups.length > 0 && (
-        <InnovativeSignups signups={latestSignups} />
+        <InnovativeSignups signups={latestSignups}  totalUsers={totalUsers} />
       )}
       <Footer server={server} />
     </>
