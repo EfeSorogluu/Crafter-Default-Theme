@@ -3,9 +3,10 @@ nixPkgs = ["nodejs_20", "vips"]
 
 [phases.install]
 cmds = [
-  "npm ci",
+  "npm ci --omit=optional",
   "rm -rf node_modules/sharp node_modules/lightningcss node_modules/@tailwindcss",
-  "npm install --cpu=x64 --os=linux sharp lightningcss @tailwindcss/postcss"
+  "npm install --cpu=x64 --os=linux sharp lightningcss",
+  "npm install --cpu=x64 --os=linux @tailwindcss/postcss @tailwindcss/oxide-linux-x64-gnu @tailwindcss/oxide-linux-x64-musl"
 ]
 
 [phases.build]
